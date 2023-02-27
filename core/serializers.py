@@ -42,7 +42,7 @@ class AircraftCreateSerializer(serializers.Serializer):
         return models.Aircraft.objects.create(
             name=self.validated_data.get('name'),
             capacity=self.validated_data.get('capacity'),
-            manufacturer_id=self.validated_data['manufacturer']
+            manufacturer_id=self.validated_data.get('manufacturer')
         )
 
 

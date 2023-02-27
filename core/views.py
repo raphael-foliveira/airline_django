@@ -98,7 +98,7 @@ class CrewMemberView(viewsets.ViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
-        return Response({'error': serializer.errors}, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request: Request, pk=None):
         try:
