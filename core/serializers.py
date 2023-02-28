@@ -3,22 +3,22 @@ from rest_framework import serializers
 from . import models
 
 
-class CrewMemberSerializer(serializers.ModelSerializer):
+class CrewMember(serializers.ModelSerializer):
     class Meta:
         model = models.CrewMember
         fields = '__all__'
         read_only_fields = ['id']
 
 
-class ManufacturerSerializer(serializers.ModelSerializer):
+class Manufacturer(serializers.ModelSerializer):
     class Meta:
         model = models.Manufacturer
         fields = '__all__'
         read_only_fields = ['id']
 
 
-class AircraftSerializer(serializers.ModelSerializer):
-    manufacturer = ManufacturerSerializer()
+class Aircraft(serializers.ModelSerializer):
+    manufacturer = Manufacturer()
 
     class Meta:
         model = models.Aircraft
@@ -26,7 +26,7 @@ class AircraftSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-class AircraftCreateSerializer(serializers.Serializer):
+class AircraftCreate(serializers.Serializer):
     name = serializers.CharField()
     capacity = serializers.IntegerField()
     manufacturer = serializers.IntegerField()
@@ -46,22 +46,22 @@ class AircraftCreateSerializer(serializers.Serializer):
         )
 
 
-class PassengerSerializer(serializers.ModelSerializer):
+class Passenger(serializers.ModelSerializer):
     class Meta:
         model = models.Passenger
         fields = '__all__'
         read_only_fields = ['id']
 
 
-class AirportSerializer(serializers.ModelSerializer):
+class Airport(serializers.ModelSerializer):
     class Meta:
         model = models.Airport
         fields = '__all__'
         read_only_fields = ['id']
 
 
-class FlightSerializer(serializers.ModelSerializer):
-    crew_members = CrewMemberSerializer(many=True)
+class Flight(serializers.ModelSerializer):
+    crew_members = CrewMember(many=True)
 
     class Meta:
         model = models.Flight
@@ -69,7 +69,7 @@ class FlightSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-class TicketSerializer(serializers.ModelSerializer):
+class Ticket(serializers.ModelSerializer):
 
     class Meta:
         model = models.Ticket

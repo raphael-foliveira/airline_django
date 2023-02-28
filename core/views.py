@@ -8,12 +8,12 @@ from . import models, serializers
 class AircraftView(viewsets.ViewSet):
     def list(self, _: Request):
         aircrafts = models.Aircraft.objects.all()
-        serializer = serializers.AircraftSerializer(
+        serializer = serializers.Aircraft(
             instance=aircrafts, many=True)
         return Response(serializer.data)
 
     def create(self, request: Request):
-        serializer = serializers.AircraftCreateSerializer(
+        serializer = serializers.AircraftCreate(
             data=request.data)
         if serializer.is_valid():
             serializer.create()
@@ -23,7 +23,7 @@ class AircraftView(viewsets.ViewSet):
     def retrieve(self, _: Request, pk=None):
         try:
             aircraft = models.Aircraft.objects.get(pk=pk)
-            serializer = serializers.AircraftSerializer(instance=aircraft)
+            serializer = serializers.Aircraft(instance=aircraft)
             return Response(serializer.data, status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status.HTTP_404_NOT_FOUND)
@@ -33,7 +33,7 @@ class AircraftView(viewsets.ViewSet):
             aircraft = models.Aircraft.objects.get(pk=pk)
             aircraft.capacity = request.data['capacity']
             aircraft.save()
-            serializer = serializers.AircraftSerializer(instance=aircraft)
+            serializer = serializers.Aircraft(instance=aircraft)
             return Response(serializer.data, status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status.HTTP_400_BAD_REQUEST)
@@ -50,21 +50,21 @@ class AircraftView(viewsets.ViewSet):
 class ManufacturerView(viewsets.ViewSet):
     def list(self, _: Request):
         manufacturers = models.Manufacturer.objects.all()
-        serializer = serializers.ManufacturerSerializer(
+        serializer = serializers.Manufacturer(
             instance=manufacturers, many=True)
         return Response(serializer.data)
 
     def retrieve(self, _: Request, pk=None):
         try:
             manufacturer = models.Manufacturer.objects.get(pk=pk)
-            serializer = serializers.ManufacturerSerializer(
+            serializer = serializers.Manufacturer(
                 instance=manufacturer)
             return Response(serializer.data, status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status.HTTP_400_BAD_REQUEST)
 
     def create(self, request: Request):
-        serializer = serializers.ManufacturerSerializer(
+        serializer = serializers.Manufacturer(
             data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -82,19 +82,19 @@ class ManufacturerView(viewsets.ViewSet):
 class CrewMemberView(viewsets.ViewSet):
     def list(self, _: Request):
         crew = models.CrewMember.objects.all()
-        serializer = serializers.CrewMemberSerializer(instance=crew, many=True)
+        serializer = serializers.CrewMember(instance=crew, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def retrieve(self, _: Request, pk=None):
         try:
             crew_member = models.CrewMember.objects.get(pk=pk)
-            serializer = serializers.CrewMemberSerializer(instance=crew_member)
+            serializer = serializers.CrewMember(instance=crew_member)
             return Response(serializer.data, status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status.HTTP_400_BAD_REQUEST)
 
     def create(self, request: Request):
-        serializer = serializers.CrewMemberSerializer(data=request.data)
+        serializer = serializers.CrewMember(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
@@ -111,19 +111,19 @@ class CrewMemberView(viewsets.ViewSet):
 
 class AirportView(viewsets.ModelViewSet):
     queryset = models.Airport.objects.all()
-    serializer_class = serializers.AirportSerializer
+    serializer_class = serializers.Airport
 
 
 class PassengersView(viewsets.ModelViewSet):
     queryset = models.Passenger.objects.all()
-    serializer_class = serializers.PassengerSerializer
+    serializer_class = serializers.Passenger
 
 
 class FlightView(viewsets.ModelViewSet):
     queryset = models.Flight.objects.all()
-    serializer_class = serializers.FlightSerializer
+    serializer_class = serializers.Flight
 
 
 class TicketView(viewsets.ModelViewSet):
     queryset = models.Ticket.objects.all()
-    serializer_class = serializers.TicketSerializer
+    serializer_class = serializers.Ticket
