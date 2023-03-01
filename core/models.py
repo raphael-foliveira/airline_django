@@ -15,6 +15,9 @@ class Aircraft(models.Model):
         to=Manufacturer, on_delete=models.CASCADE, related_name="aircrafts")
     capacity = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.manufacturer.name} {self.name}'
+
 
 class CrewMember(models.Model):
     class CrewMemberRoles(models.TextChoices):
@@ -27,14 +30,21 @@ class CrewMember(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} ({self.role})'
+
 
 class Airport(models.Model):
     iata = models.CharField(max_length=3)
     country = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
 
+    def __str__(self):
+        return f'{self.city} ({self.iata})'
+
 
 class Flight(models.Model):
+    number = models.CharField(max_length=10)
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField(null=True)
     aircraft = models.ForeignKey(
@@ -43,6 +53,16 @@ class Flight(models.Model):
         to=Airport, related_name='flights_depart', on_delete=models.SET_NULL, null=True)
     arrival_airport = models.ForeignKey(
         to=Airport, related_name='flights_arrive', on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.number + ": " + self.departure_airport.iata + " - " + self.arrival_airport.iata
+
+
+class CrewMember_Flight(models.Model):
+    crew_member = models.ForeignKey(
+        to=CrewMember, related_name='flights', on_delete=models.CASCADE)
+    flight = models.ForeignKey(
+        to=Flight, related_name='crew', on_delete=models.CASCADE)
 
 
 class Passenger(models.Model):

@@ -29,7 +29,7 @@ class Aircraft(serializers.ModelSerializer):
 class AircraftCreate(serializers.Serializer):
     name = serializers.CharField()
     capacity = serializers.IntegerField()
-    manufacturer = serializers.IntegerField()
+    manufacturer_id = serializers.IntegerField()
 
     def validate_manufacturer(self, value):
         try:
@@ -38,12 +38,8 @@ class AircraftCreate(serializers.Serializer):
         except:
             raise serializers.ValidationError('manufacturer does not exist')
 
-    def create(self):
-        return models.Aircraft.objects.create(
-            name=self.validated_data.get('name'),
-            capacity=self.validated_data.get('capacity'),
-            manufacturer_id=self.validated_data.get('manufacturer')
-        )
+    def create(self, validated_data):
+        return models.Aircraft.objects.create(**validated_data)
 
 
 class Passenger(serializers.ModelSerializer):
@@ -75,3 +71,36 @@ class Ticket(serializers.ModelSerializer):
         model = models.Ticket
         fields = '__all__'
         read_only_fields = ['id']
+
+
+class TicketCreate(serializers.Serializer):
+    passenger_id = serializers.IntegerField()
+    flight_id = serializers.IntegerField()
+    price = serializers.IntegerField()
+    number_of_bags = serializers.IntegerField()
+    ticket_class = serializers.ChoiceField(choices=["FR", "EX", "EC"])
+    buyer_id = serializers.IntegerField()
+
+    def validate_passenger_id(self, value):
+        try:
+            models.Passenger.objects.get(pk=value)
+            return value
+        except:
+            raise serializers.ValidationError('Passenger does not exist')
+
+    def validate_flight(self, value):
+        try:
+            models.Flight.objects.get(pk=value)
+            return value
+        except:
+            raise serializers.ValidationError('Flight does not exist')
+
+    def validate_buyer(self, value):
+        try:
+            models.User.objects.get(pk=value)
+            return value
+        except:
+            raise serializers.ValidationError('User does not exist')
+
+    def create(self, validated_data):
+        return models.Ticket.objects.create(**validated_data)
