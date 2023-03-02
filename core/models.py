@@ -48,11 +48,11 @@ class Flight(models.Model):
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField(null=True)
     aircraft = models.ForeignKey(
-        to=Aircraft, on_delete=models.SET_NULL, null=True, related_name="flights")
+        to=Aircraft, on_delete=models.CASCADE, related_name="flights")
     departure_airport = models.ForeignKey(
-        to=Airport, related_name='flights_depart', on_delete=models.SET_NULL, null=True)
+        to=Airport, related_name='flights_depart', on_delete=models.CASCADE)
     arrival_airport = models.ForeignKey(
-        to=Airport, related_name='flights_arrive', on_delete=models.SET_NULL, null=True)
+        to=Airport, related_name='flights_arrive', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.number + ": " + self.departure_airport.iata + " - " + self.arrival_airport.iata
