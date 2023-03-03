@@ -6,13 +6,12 @@ from . import views
 app_name = 'core'
 
 router = DefaultRouter()
-router.register('aircrafts', views.Aircraft, basename='aircraft')
-router.register('manufacturers', views.Manufacturer,
-                basename='manufacturer')
-router.register('passengers', views.Passengers, basename='passenger')
-router.register('flights', views.Flight, basename='flight')
-router.register('crew', views.CrewMember, basename='crew_member')
-router.register('tickets', views.Ticket, basename='ticket')
+router.register('aircrafts', views.Aircraft)
+router.register('manufacturers', views.Manufacturer)
+router.register('passengers', views.Passengers)
+router.register('flights', views.Flight)
+router.register('crew', views.CrewMember)
+router.register('tickets', views.Ticket)
 
 
 urlpatterns = router.urls
