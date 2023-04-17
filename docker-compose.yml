@@ -1,0 +1,26 @@
+services:
+  airline_api:
+    container_name: airline_api
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: airline_django
+      POSTGRES_HOST: airline_db
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - airline_db
+
+  airline_db:
+    container_name: airline_db
+    ports:
+      - "5432:5432"
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: airline_django

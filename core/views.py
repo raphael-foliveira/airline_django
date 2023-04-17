@@ -1,4 +1,6 @@
-from rest_framework import viewsets
+from django.http import HttpRequest
+from rest_framework import viewsets, renderers, views
+from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -18,7 +20,7 @@ class Manufacturer(viewsets.ModelViewSet):
 class CrewMember(viewsets.ModelViewSet):
     queryset = models.CrewMember.objects.all()
     serializer_class = serializers.CrewMember
-    
+
 
 class AirportView(viewsets.ModelViewSet):
     queryset = models.Airport.objects.all()
@@ -36,9 +38,20 @@ class Flight(viewsets.ModelViewSet):
 
 
 class Ticket(viewsets.ModelViewSet):
-
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     queryset = models.Ticket.objects.all()
     serializer_class = serializers.Ticket
+
+
+class SomeView(views.APIView):
+    def get(self, _: HttpRequest) -> Response:
+        manufacturers = models.Manufacturer.objects.all()
+        serializer = serializers.Manufacturer(manufacturers, many=True)
+        return Response(
+            {
+                "message": "Hello, World!",
+                "manufacturer": serializer.data,
+            }
+        )

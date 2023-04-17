@@ -19,10 +19,14 @@ from rest_framework.schemas import get_schema_view
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('core.urls', namespace='core')),
-    path('swagger/', get_schema_view(), name='swagger'),
-    path('docs/', TemplateView.as_view(
-        template_name='swagger.html',
-    ), name='swagger-ui'),
+    path("admin/", admin.site.urls),
+    path("api/", include("core.urls", namespace="core")),
+    path("swagger/", get_schema_view(), name="swagger"),
+    path(
+        "docs/",
+        TemplateView.as_view(
+            template_name="swagger.html",
+        ),
+        name="swagger-ui",
+    ),
 ]
